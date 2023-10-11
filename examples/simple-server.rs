@@ -6,6 +6,7 @@ use std::io::Read;
 use std::net::{TcpListener, TcpStream};
 use std::sync::Arc;
 use std::thread;
+use std::io::Write;
 
 fn main() {
     let mut file = File::open("identity.pfx").unwrap();
@@ -18,8 +19,14 @@ fn main() {
 
     let listener = TcpListener::bind("0.0.0.0:8443").unwrap();
 
-    fn handle_client(_stream: TlsStream<TcpStream>) {
-        // ...
+    fn handle_client(mut stream: TlsStream<TcpStream>) {
+        let mut buf = [0; 1024];
+        let read = stream.read(&mut buf).unwrap();
+        let received = std::str::from_utf8(&buf[0..read]).unwrap();
+        stream
+            .write_all(format!("received '{}'", received).as_bytes())
+            .unwrap();
+        println!("received '{}'", received);
     }
 
     for stream in listener.incoming() {

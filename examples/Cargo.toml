@@ -1,0 +1,18 @@
+[package]
+name = "server"
+version = "0.1.0"
+
+[dependencies]
+native-tls = { path = "../"}
+
+[[bin]]
+name = "simple-server"
+path = "simple-server.rs"
+
+[[bin]]
+name = "google-connect"
+path = "google-connect.rs"
+
+[[bin]]
+name = "simple-server-pkcs8"
+path = "simple-server-pkcs8.rs"
